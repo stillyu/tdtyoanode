@@ -5,10 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var routes = require('./routes/router');
 
 var app = express();
 var hbs = require('hbs');
+var mongoConnection = require('./credentials/mongoConnection.js');
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
 // view engine setup
@@ -22,6 +23,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// database configuration
+var mongoose = require('mongoose');
+var options = {
+    server: {
+       socketOptions: { keepAlive: 1 } 
+    }
+};
+mongoose.connect(mongoConnection.connectionString, options);
+
 
 app.use('/', routes);
 
