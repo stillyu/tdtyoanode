@@ -1,0 +1,107 @@
+#uploadDiv{
+	border: 3px dashed #AAAAAA;
+	height: 500px;
+}
+#progressModal{
+	margin: 0 auto;
+	width: 200px;
+	height: 200px;
+	position: relative;
+	bottom: 100px;
+}
+.orderTable{
+	width: 100%;
+}
+.orderTable th{
+	height : 40px;
+	line-height: 40px;
+}
+.orderTable td,
+.orderTable th{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #1ab394;
+	text-align: center;
+}
+.orderTable thead tr th:nth-child(1){
+	width : 25%;
+}
+.orderTable thead tr th:nth-child(2){
+	width : 15%;
+}
+.orderTable thead tr th:nth-child(3){
+	width : 10%;
+}
+.orderTable thead tr th:nth-child(4){
+	width : 10%;
+}
+.orderTable thead tr th:nth-child(5){
+	width : 10%;
+}
+.orderTable thead tr th:nth-child(6){
+	width : 15%;
+}
+.orderTable thead tr th:nth-child(7){
+	width : 15%;
+}
+#steps{
+	padding: 20px;
+}
+.stepNav li{
+	width: 24.8%;
+	border-radius: 5px;
+}
+.stepNav li.active{
+	border: 0;
+}
+.btnGroup{
+	margin: 5px 0;
+	text-align: right;
+}
+.btnGroup span{
+	font-size: 25px;
+	line-height: 25px;
+}
+.img-item{
+	display: inline-block;
+	margin: 4px;
+	line-height: 1.42857143;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	-webkit-transition: all .2s ease-in-out;
+	   -o-transition: all .2s ease-in-out;
+	      transition: all .2s ease-in-out;
+}
+#pic,
+#editPic{
+  margin-left: 18px;
+  -moz-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px;
+}
+.removePic,
+#editRemovePic{
+  position: absolute;
+  top: 85px;
+  left: 230px;
+}
+.productInfoTd{
+	text-align: left;
+}
+#fileDiv{
+	margin: 0 auto;
+	text-align: center;
+}
+#fileDiv img{
+	width: 150px;
+	cursor: pointer;
+}
+#canvasDiv{
+	border: 1px dashed grey;
+	position: absolute;
+	width: 210mm;
+	height: 100mm;
+}

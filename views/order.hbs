@@ -16,34 +16,264 @@
     <link href="H/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
     <link href="H/css/animate.css" rel="stylesheet">
-    <link href="H/css/style.css?v=4.0.0" rel="stylesheet"><base target="_blank">
-    <link href="H/css/plugins/webuploader/webuploader.css" rel="stylesheet"><base target="_blank">
+    <link href="H/css/style.css?v=4.0.0" rel="stylesheet">
+    <link href="H/css/plugins/webuploader/webuploader.css" rel="stylesheet">
+    <link href="stylesheets/order.css" rel="stylesheet">
 
 </head>
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12" id = "uploadDiv">
                 <div class="middle-box text-center animated fadeInRightBig">
-                    <h3 class="font-bold">这里是页面内容</h3>
-
-                    <div class="error-desc">
-                        您可以在这里添加栅格，参考首页及其他页面完成不同的布局
-                        <br/><a href="#" class="btn btn-primary m-t">打开主页</a>
+                    <div id="uploader" class="wu-example">
+                        <div class="btns">
+                            <div id="picker">请选择CDR文件,或将文件拖至此窗口</div>
+                        </div>
+                        <div id = "progressModal" class = "animated bounceInRight">
+                            <h1>45%</h1>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div id = "fileDiv">
+                <a href = "mycdr:\\192.168.1.14\Public\2.cdr">
+                    <img src = "images/cdrlogo.png">
+                    <p class = "fileName">鑫源-科室牌.cdr</p>
+                </a>
+            </div>
+
+            <div class="row" id = "steps">
+                <ul class="nav nav-pills stepNav">
+                   <li role="presentation" class="active"><a href="#">1.产品信息</a></li>
+                   <li role="presentation"><a href="#">2.基本信息</a></li>
+                   <li role="presentation"><a href="#">3.打印设计</a></li>
+                   <li role="presentation"><a href="#">4.完成下单</a></li>
+                </ul>
+                <div class = "btnGroup">
+                    <a href = "#" class = "btn btn-primary" id = "addBtn">添加项目</a>
+                    <a href = "#" class = "btn btn-primary" id = "resetBtn">重置</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href = "#" class = "btn btn-primary" id = "previousBtn">上一步</a>
+                    <a href = "#" class = "btn btn-primary" id = "nextBtn">下一步</a>
+                </div>
+                <div id = "step1">
+                    <table class = "orderTable">
+                        <thead>
+                            <tr>
+                                <th>图片</th><th>规格</th><th>单价</th><th>数量</th><th>总价</th><th>备注</th><th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "img-item">
+                                </td>
+                                <td class = "productInfoTd">
+                                    <span>弧形科室牌</span><br/>
+                                    <span>317*157</span><br/>
+                                    <span>半光</span>
+                                </td>
+                                <td>
+                                    55.00
+                                </td>
+                                <td>
+                                    5
+                                </td>
+                                <td>
+                                    275.00
+                                </td>
+                                <td>
+                                    备注
+                                </td>
+                                <td>
+                                    <a href = "javascript:void(0);" class = "btn btn-primary">修改</a>
+                                    <a href = "javascript:void(0);" class = "btn btn-primary">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "img-item">
+                                </td>
+                                <td class = "productInfoTd">
+                                    <span>弧形科室牌2324324343</span><br/>
+                                    <span>317*157</span><br/>
+                                    <span>半光</span>
+                                </td>
+                                <td>
+                                    55.00
+                                </td>
+                                <td>
+                                    5
+                                </td>
+                                <td>
+                                    275.00
+                                </td>
+                                <td>
+                                    备注
+                                </td>
+                                <td>
+                                    <a href = "javascript:void(0);" class = "btn btn-primary">修改</a>
+                                    <a href = "javascript:void(0);" class = "btn btn-primary">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- end of step1 -->
+
+                <div id = "step2">
+                    <form class="form-horizontal">
+
+                      <div class="form-group">
+                        <label for="customer" class="col-sm-4 control-label">客户</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="customer" placeholder="客户">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="receiver" class="col-sm-4 control-label">收货人</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="receiver" placeholder="收货人">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="logisticsWay" class="col-sm-4 control-label">发货方式</label>
+                        <div class="col-sm-4">
+                          <select class="form-control" id="logisticsWay">
+                            <option value = "快递">快递</option>
+                            <option value = "物流">物流</option>
+                            <option value = "自提">自提</option>
+                            <option value = "送货">送货</option>
+                            <option value = "安装">安装</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="expectedDate" class="col-sm-4 control-label">发货日期</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="expectedDate" placeholder="发货日期">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="remark" class="col-sm-4 control-label">订单备注</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="remark" placeholder="订单备注">
+                        </div>
+                      </div>
+
+                    </form>
+                </div>
+
+                <div id = "step3">
+                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "img-item" draggable = "true" id = "drag">
+                    <div id = "canvasDiv"></div>
+                </div>
+
+                <div id = "step4">
+                    完成
+                </div>
+
+            </div>
         </div>
     </div>
-    
+
+    <div class="modal fade" id = "productModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form class="form-horizontal" role="form">
+
+              <div class="form-group">
+                <label for="pic" class="col-sm-2 control-label">图片</label>
+                <div class="col-sm-10" id = "pic">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="itemName" class="col-sm-2 control-label">品名</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="itemName" placeholder="品名">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="specification" class="col-sm-2 control-label">规格</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="specification" placeholder="规格">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="price" class="col-sm-2 control-label">单价</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="price" placeholder="单价">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="glossiness" class="col-sm-2 control-label">光泽度</label>
+                <div class="col-sm-10">
+                  <!-- <input type = "text" class="form-control detailClass" id="unit" placeholder="单位"> -->
+                  <select class = "form-control detailClass" id = "glossiness">
+                    <option value = "半光">半光</option>
+                    <option value = "亮光">亮光</option>
+                    <option value = "哑光">哑光</option>
+                    <option value = "半光偏亮">半光偏亮</option>
+                    <option value = "半光偏哑">半光偏哑</option>
+                    <option value = "见图">见图</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="count" class="col-sm-2 control-label">数量</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="count" placeholder="数量" value = "1">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="sum" class="col-sm-2 control-label">总价</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="sum" placeholder="总价">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="remark" class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="remark" placeholder="备注">
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id = "itemAddSubmitBtn">确定</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
     <!-- 全局js -->
     <script src="H/js/jquery.min.js?v=2.1.4"></script>
     <script src="H/js/bootstrap.min.js?v=3.3.5"></script>
     <script src="H/js/plugins/webuploader/webuploader.min.js"></script>
+    <script src="javascripts/bootstrap-suggest.min.js"></script>
+    <script src="H/js/plugins/layer/laydate/laydate.js"></script>
     
     <!-- 自定义js -->
-    <script src="H/js/content.js?v=1.0.0"></script>
+    <script src="javascripts/upbox.function.js"></script>
+    <script src="javascripts/upbox.js"></script>
+    <script src="javascripts/order.js"></script>
 
 </body>
 
