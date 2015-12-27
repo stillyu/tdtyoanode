@@ -38,14 +38,14 @@
                 </div>
             </div>
 
-            <div id = "fileDiv">
+            <div id = "fileDiv" class = "animated bounceIn">
                 <a href = "mycdr:\\192.168.1.14\Public\2.cdr">
                     <img src = "images/cdrlogo.png">
                     <p class = "fileName">鑫源-科室牌.cdr</p>
                 </a>
             </div>
 
-            <div class="row" id = "steps">
+            <div class="row animated bounceIn" id = "steps">
                 <ul class="nav nav-pills stepNav">
                    <li role="presentation" class="active"><a href="#">1.产品信息</a></li>
                    <li role="presentation"><a href="#">2.基本信息</a></li>
@@ -63,62 +63,10 @@
                     <table class = "orderTable">
                         <thead>
                             <tr>
-                                <th>图片</th><th>规格</th><th>单价</th><th>数量</th><th>总价</th><th>备注</th><th>操作</th>
+                                <th>图片</th><th>规格</th><th>单价</th><th>数量</th><th>总价</th><th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "img-item">
-                                </td>
-                                <td class = "productInfoTd">
-                                    <span>弧形科室牌</span><br/>
-                                    <span>317*157</span><br/>
-                                    <span>半光</span>
-                                </td>
-                                <td>
-                                    55.00
-                                </td>
-                                <td>
-                                    5
-                                </td>
-                                <td>
-                                    275.00
-                                </td>
-                                <td>
-                                    备注
-                                </td>
-                                <td>
-                                    <a href = "javascript:void(0);" class = "btn btn-primary">修改</a>
-                                    <a href = "javascript:void(0);" class = "btn btn-primary">删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "img-item">
-                                </td>
-                                <td class = "productInfoTd">
-                                    <span>弧形科室牌2324324343</span><br/>
-                                    <span>317*157</span><br/>
-                                    <span>半光</span>
-                                </td>
-                                <td>
-                                    55.00
-                                </td>
-                                <td>
-                                    5
-                                </td>
-                                <td>
-                                    275.00
-                                </td>
-                                <td>
-                                    备注
-                                </td>
-                                <td>
-                                    <a href = "javascript:void(0);" class = "btn btn-primary">修改</a>
-                                    <a href = "javascript:void(0);" class = "btn btn-primary">删除</a>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div> <!-- end of step1 -->
@@ -129,7 +77,17 @@
                       <div class="form-group">
                         <label for="customer" class="col-sm-4 control-label">客户</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="customer" placeholder="客户">
+                          <div class="input-group">
+                              <input type="text" class="form-control" id="customer">
+                              <div class="input-group-btn">
+                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                      <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                  </ul>
+                              </div>
+                              <!-- /btn-group -->
+                          </div>
                         </div>
                       </div>
 
@@ -171,8 +129,9 @@
                 </div>
 
                 <div id = "step3">
-                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "img-item" draggable = "true" id = "drag">
-                    <div id = "canvasDiv"></div>
+                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "itemPic">
+                    <img src = "http://i.bjtdty.com/order/2015/12/1/1448940042725.jpg" width = "200" class = "itemPic">
+                    <canvas id = "myCanvas" width = "1000" height = "800"></canvas>
                 </div>
 
                 <div id = "step4">
@@ -210,13 +169,6 @@
               </div>
 
               <div class="form-group">
-                <label for="price" class="col-sm-2 control-label">单价</label>
-                <div class="col-sm-10">
-                  <input type = "text" class="form-control detailClass" id="price" placeholder="单价">
-                </div>
-              </div>
-
-              <div class="form-group">
                 <label for="glossiness" class="col-sm-2 control-label">光泽度</label>
                 <div class="col-sm-10">
                   <!-- <input type = "text" class="form-control detailClass" id="unit" placeholder="单位"> -->
@@ -228,6 +180,13 @@
                     <option value = "半光偏哑">半光偏哑</option>
                     <option value = "见图">见图</option>
                   </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="price" class="col-sm-2 control-label">单价</label>
+                <div class="col-sm-10">
+                  <input type = "text" class="form-control detailClass" id="price" placeholder="单价">
                 </div>
               </div>
 
@@ -245,18 +204,11 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="remark" class="col-sm-2 control-label">备注</label>
-                <div class="col-sm-10">
-                  <input type = "text" class="form-control detailClass" id="remark" placeholder="备注">
-                </div>
-              </div>
-
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary" id = "itemAddSubmitBtn">确定</button>
+            <button type="button" class="btn btn-primary itemAddSubmitBtn" id = "itemAddSubmitBtn">确定</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -271,6 +223,7 @@
     <script src="H/js/plugins/layer/laydate/laydate.js"></script>
     
     <!-- 自定义js -->
+    <script src="javascripts/fabric.min.js"></script>
     <script src="javascripts/upbox.function.js"></script>
     <script src="javascripts/upbox.js"></script>
     <script src="javascripts/order.js"></script>

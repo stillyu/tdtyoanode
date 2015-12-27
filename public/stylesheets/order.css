@@ -99,9 +99,10 @@
 	width: 150px;
 	cursor: pointer;
 }
-#canvasDiv{
+#myCanvas{
 	border: 1px dashed grey;
 	position: absolute;
-	width: 210mm;
-	height: 100mm;
+	width: 1000px;
+	height: 800px;
+	position: absolute;
 }

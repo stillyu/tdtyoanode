@@ -1,5 +1,7 @@
 $(function(){
     $("#progressModal").hide();
+    $("#fileDiv").hide();
+    $("#steps").hide();
     var uploader = WebUploader.create({
 
         // swf文件路径
@@ -45,7 +47,11 @@ $(function(){
         $("#progressModal").addClass("animated");
         $("#progressModal").addClass("bounceOut");
         $("#uploadDiv").addClass("animated").addClass("bounceOut");
+        $(".fileName").text(file.name);
         setTimeout("$('#uploadDiv').remove();",800);
+        setTimeout("$('#fileDiv').show();",800);
+        setTimeout("$('#steps').show();",800);
+        setTimeout("$('#productModal').modal('show');",1000);
     });
 
     var step = 1;
@@ -109,6 +115,8 @@ $(function(){
             return 0;
         step++;
         btnStatusCkeck(step);
+        if(step == 4)
+            savePic();
     });
 
     $("#addBtn").click(function(){
@@ -145,15 +153,16 @@ $(function(){
         $(".detailClass").each(function(){
             $(this).val("");
         })
+        $("#glossiness").val("半光");
         setPicDivEdit();
     }
-    $("#itemAddSubmitBtn").click(function(){
+    $(document).on("click",".itemAddSubmitBtn",function(){
         var htmlStr = "";
         htmlStr += "<tr>";
         htmlStr +=      "<td>";
         htmlStr +=          "<img src = '" + $("#pic img").attr("src") + "' width = '200' class = 'img-item'>";
         htmlStr +=      "</td><td class = 'productInfoTd'>";
-        htmlStr +=          "<span>" + $("#itemName").val(); + "</span><br/><span>" + $("#specification").val(); + "</span><br/><span>" + $("#glossiness").val(); + "</span>"
+        htmlStr +=          "<span>" + $("#itemName").val() + "</span><br/><span>" + $("#specification").val() + "</span><br/><span>" + $("#glossiness").val() + "</span>"
         htmlStr +=      "</td><td>";
         htmlStr +=          $("#price").val();
         htmlStr +=      "</td><td>";
@@ -161,14 +170,43 @@ $(function(){
         htmlStr +=      "</td><td class = 'itemSum'>";
         htmlStr +=          $("#sum").val();
         htmlStr +=      "</td><td>";
-        htmlStr +=          $("#remark").val();
-        htmlStr +=      "</td><td>";
         htmlStr +=          "<a href = '#' class = 'btn btn-info btn-sm itemEdit'><span class = 'glyphicon glyphicon-edit'>&nbsp;修改</span></a> <a href = '#' class = 'btn btn-warning btn-sm itemRemove'><span class = 'glyphicon glyphicon-remove'>&nbsp;删除</span></a>";
         htmlStr +=      "</td>";
         htmlStr +=  "</tr>";
+        console.log(htmlStr);
         $(".orderTable tbody").append(htmlStr);
         $("#productModal").modal("hide");
         setModalEmpty();
+    })
+    $(document).on("click",".itemEdit",function(){
+        var tr = $(this).parent().parent();
+        $("#pic").html("<img src = '" + tr.find("td:eq(0)").find("img").attr("src") + "' width = '200' height = '200' id = 'imgPreview'><a href = '#' class = 'removePic'><span class='glyphicon glyphicon-remove'></span></a>");
+        $("#itemName").val(tr.find("td:eq(1)").find("span:eq(0)").text());
+        $("#specification").val(tr.find("td:eq(1)").find("span:eq(1)").text());
+        $("#glossiness").val(tr.find("td:eq(1)").find("span:eq(2)").text());
+        $("#price").val(tr.find("td:eq(2)").text());
+        $("#count").val(tr.find("td:eq(3)").text());
+        $("#sum").val(tr.find("td:eq(4)").text());
+        $("#productModal").modal("show");
+        tr.addClass("inEdit");
+        $("#itemAddSubmitBtn").addClass("inEditBtn");
+        $("#itemAddSubmitBtn").removeClass("itemAddSubmitBtn");
+    })
+    $(document).on("click",".inEditBtn",function(){
+        var tr = $(".inEdit");
+        tr.find("td:eq(0)").find("img").attr("src",$("#pic img").attr("src"));
+        tr.find("td:eq(1)").find("span:eq(0)").text($("#itemName").val());
+        tr.find("td:eq(1)").find("span:eq(1)").text($("#specification").val());
+        tr.find("td:eq(1)").find("span:eq(2)").text($("#glossiness").val());
+        tr.find("td:eq(2)").text($("#price").val());
+        tr.find("td:eq(3)").text($("#count").val());
+        tr.find("td:eq(4)").text($("#sum").val());
+        $("#productModal").modal("hide");
+        tr.removeClass("inEdit");
+        $("#itemAddSubmitBtn").removeClass("inEditBtn");
+        $("#itemAddSubmitBtn").addClass("itemAddSubmitBtn");
+        setModalEmpty();
+        console.log(tr.attr("class"));
     })
 
     //外部js调用
@@ -177,40 +215,74 @@ $(function(){
         event: 'focus', //响应事件。如果没有传入event，则按照默认的click
     });
 
-    $("#drag")[0].ondragstart = function (event){  
-        console.log("dragStart");  
-        event.dataTransfer.setData("Text", event.target.id);  
-    };
-    $("#canvasDiv")[0].ondrop = function (event)  
-            {  
-             /*   for (var p in event.dataTransfer) 
-                { 
-                    console.log(p + " = " + event.dataTransfer[p] + " @@"); 
-                } 
-            */  
-                console.log("onDrop");  
-                var id = event.dataTransfer.getData("Text");  
-                $(this).append($("#" + id).clone().text($(this).find("div").length));  
-                event.preventDefault();  
-            };  
-            $("#canvasDiv")[0].ondragover = function (event)  
-            {  
-                console.log("onDrop over");  
-                event.preventDefault();  
-            }  
-  
-            $("#canvasDiv")[0].ondragenter = function (event)  
-            {  
-                console.log("onDrop enter");  
-            }  
-  
-            $("#canvasDiv")[0].ondragleave = function (event)  
-            {  
-                console.log("onDrop leave");  
-            }  
-  
-            $("#canvasDiv")[0].ondragend = function (event)  
-            {  
-                console.log("onDrop end");  
-            }  
-})
+    var canvas = this.__canvas = new fabric.Canvas('myCanvas');
+
+    $(".itemPic").click(function(){
+        var src = $(this).attr("src");
+        var newSrc = getLocalImg(src);
+        var img = new Image;
+        img.src = src;
+        displayWidth = 200;
+        displayHeight = displayWidth * img.naturalHeight / img.naturalWidth;
+        addImage(newSrc,displayWidth,displayHeight);
+    })
+    function addImage(src,displayWidth,displayHeight){
+        fabric.Image.fromURL(src, function(img) {
+            var oImg = img.set({
+                left: 0,
+                top: 0,
+                angle: 0,
+                width : displayWidth,
+                height : displayHeight,
+                hasRotatingPoint : false,
+            }).scale(0.9);
+            canvas.add(oImg).renderAll();
+            canvas.setActiveObject(oImg); 
+        },{
+            crossOrigin : "anonymous",
+        });
+    }
+
+    function savePic(){
+        var c = document.getElementById('myCanvas');
+        var str = c.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        console.log(str);
+    }
+    function getLocalImg(src){
+        var newSrc = "";
+        $.ajax({
+            async : false,
+            type : "post",
+            url : "api/imgDownload",
+            data : {"imgSrc" : src},
+            success : function(data){
+                newSrc = data;
+            }
+        })
+        return newSrc;
+    }
+
+    var typeSuggest = $("#customer").bsSuggest({
+        url : "api/getCustomer",
+        showBtn: false,
+        effectiveFields: ["realName","company"],
+        keyField: "realName",
+        idField : "_id",
+        effectiveFieldsAlias : {"realName" : "姓名","company" : "公司"},
+    })
+});
+
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    var canvas = this.__canvas || this.canvas,
+        canvases = this.__canvases || this.canvases;
+
+    canvas && canvas.calcOffset && canvas.calcOffset();
+
+    if (canvases && canvases.length) {
+      for (var i = 0, len = canvases.length; i < len; i++) {
+        canvases[i].calcOffset();
+      }
+    }
+  });
+})();

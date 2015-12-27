@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/router');
+var api = require('./routes/api');
 
 var app = express();
 var hbs = require('hbs');
@@ -22,7 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 // database configuration
 var mongoose = require('mongoose');
 var options = {
@@ -32,7 +32,7 @@ var options = {
 };
 mongoose.connect(mongoConnection.connectionString, options);
 
-
+app.use('/api/', api);
 app.use('/', routes);
 
 // catch 404 and forward to error handler
