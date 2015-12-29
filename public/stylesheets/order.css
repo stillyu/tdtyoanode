@@ -57,6 +57,7 @@
 .btnGroup{
 	margin: 5px 0;
 	text-align: right;
+	display: inline;
 }
 .btnGroup span{
 	font-size: 25px;
@@ -102,7 +103,31 @@
 #myCanvas{
 	border: 1px dashed grey;
 	position: absolute;
-	width: 1000px;
-	height: 800px;
+	width: 646px;
+	height: 771px;
 	position: absolute;
+	margin: 0 auto;
+}
+.tags{
+	position: relative;
+	top: 10px;
+}
+.tagLabel{
+	cursor: pointer;
+}
+.orderSteps{
+	line-height: 30px;
+	cursor: pointer;
+}
+#canvasDiv{
+	margin: 0 auto;
+}
+.fileName{
+	font-size: 16px;
+	line-height: 40px;
+}
+#imgToDesign img{
+	display: block;
+	margin-top: 10px;
+	overflow: auto;
 }

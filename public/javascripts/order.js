@@ -2,13 +2,15 @@ $(function(){
     $("#progressModal").hide();
     $("#fileDiv").hide();
     $("#steps").hide();
+    $("#imgHide").hide();
+    var fabricItem = 1;
     var uploader = WebUploader.create({
 
         // swf文件路径
         swf: '/H/js/plugins/webuploader/Uploader.swf',
 
         // 文件接收服务端。
-        server: '/fileUpload',
+        server: '/api/fileUpload',
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -47,7 +49,7 @@ $(function(){
         $("#progressModal").addClass("animated");
         $("#progressModal").addClass("bounceOut");
         $("#uploadDiv").addClass("animated").addClass("bounceOut");
-        $(".fileName").text(file.name);
+        $(".fileName span").text(file.name);
         setTimeout("$('#uploadDiv').remove();",800);
         setTimeout("$('#fileDiv').show();",800);
         setTimeout("$('#steps').show();",800);
@@ -126,7 +128,7 @@ $(function(){
     $("#pic").upBox({
         width : "200px",
         height : "200px",
-        uploadUrl : "action/picUpload.php",
+        uploadUrl : "/api/imgUpload",
     })
     $(document).on("click",".removePic",function(){
         var parent = $(this).parent();
@@ -153,6 +155,7 @@ $(function(){
         $(".detailClass").each(function(){
             $(this).val("");
         })
+        $("#count").val("1");
         $("#glossiness").val("半光");
         setPicDivEdit();
     }
@@ -173,7 +176,6 @@ $(function(){
         htmlStr +=          "<a href = '#' class = 'btn btn-info btn-sm itemEdit'><span class = 'glyphicon glyphicon-edit'>&nbsp;修改</span></a> <a href = '#' class = 'btn btn-warning btn-sm itemRemove'><span class = 'glyphicon glyphicon-remove'>&nbsp;删除</span></a>";
         htmlStr +=      "</td>";
         htmlStr +=  "</tr>";
-        console.log(htmlStr);
         $(".orderTable tbody").append(htmlStr);
         $("#productModal").modal("hide");
         setModalEmpty();
@@ -206,7 +208,6 @@ $(function(){
         $("#itemAddSubmitBtn").removeClass("inEditBtn");
         $("#itemAddSubmitBtn").addClass("itemAddSubmitBtn");
         setModalEmpty();
-        console.log(tr.attr("class"));
     })
 
     //外部js调用
@@ -216,15 +217,33 @@ $(function(){
     });
 
     var canvas = this.__canvas = new fabric.Canvas('myCanvas');
+    var rect = new fabric.Rect({
+        width: 1000, height: 800, left: 0, top: 0, angle: 0,
+        fill: 'rgba(255,255,255,1)',
+        hasControls : false,
+        hasBorders : true,
+        hasRotatingPoint : false,
+        selectable : false,
+        borderColor : 'rgba(0,0,0,1)',
+    });
+    canvas.add(rect);
 
-    $(".itemPic").click(function(){
+    $(document).on("click",".picToDesign",function(){
         var src = $(this).attr("src");
-        var newSrc = getLocalImg(src);
-        var img = new Image;
+        var img = new Image();
         img.src = src;
         displayWidth = 200;
         displayHeight = displayWidth * img.naturalHeight / img.naturalWidth;
-        addImage(newSrc,displayWidth,displayHeight);
+        addImage(src,displayWidth,displayHeight);
+        fabricItem++;
+    });
+    $(document).on("click",".tagLabel",function(){
+        $(this).remove();
+    })
+    $("#tagsAddBtn").click(function(){
+        $(".tags p").append("<span class = 'label label-primary tagLabel'><span>"+ $("#tags").val() + "</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>");
+        $("#tags").val("");
+        alert($(".tagLabel:eq(0)").find("span").text());
     })
     function addImage(src,displayWidth,displayHeight){
         fabric.Image.fromURL(src, function(img) {
@@ -235,7 +254,7 @@ $(function(){
                 width : displayWidth,
                 height : displayHeight,
                 hasRotatingPoint : false,
-            }).scale(0.9);
+            }).scale(1);
             canvas.add(oImg).renderAll();
             canvas.setActiveObject(oImg); 
         },{
@@ -244,22 +263,23 @@ $(function(){
     }
 
     function savePic(){
+        canvas.forEachObject(function(item,key){
+            if(key != 0)
+                item['hasControls'] = false;
+                item['hasBorders'] = false;
+        });
+        canvas.renderAll();
         var c = document.getElementById('myCanvas');
-        var str = c.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        console.log(str);
-    }
-    function getLocalImg(src){
-        var newSrc = "";
+        var base64 = c.toDataURL("image/png").replace("image/png", "image/octet-stream");
         $.ajax({
             async : false,
-            type : "post",
-            url : "api/imgDownload",
-            data : {"imgSrc" : src},
+            type : 'post',
+            url : '/api/generatePdf',
+            data : {base64 : base64},
             success : function(data){
-                newSrc = data;
+                $("#pdfPrview").attr("src",data);
             }
         })
-        return newSrc;
     }
 
     var typeSuggest = $("#customer").bsSuggest({
@@ -270,6 +290,29 @@ $(function(){
         idField : "_id",
         effectiveFieldsAlias : {"realName" : "姓名","company" : "公司"},
     })
+
+    $(".stepLabel").click(function(){
+        $(this).toggleClass("label-primary");
+    })
+
+    $("#resetBtn").click(function(){
+        designResourceLoad();
+    })
+
+    function designResourceLoad(){
+        canvas.forEachObject(function(item,key){
+            if(key != 0)
+                item.remove();
+        });
+        $("#imgToDesign").html("");
+        var htmlStr = "";
+        $(".orderTable tbody tr").each(function(){
+            src = $(this).find("td").find("img").attr("src");
+            htmlStr += "<img src = '" + src + "' width = '200' class = 'picToDesign'>";
+        })
+        $("#imgToDesign").append(htmlStr);
+        fabricItem = 1;
+    }
 });
 
 (function() {

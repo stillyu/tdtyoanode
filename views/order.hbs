@@ -38,13 +38,6 @@
                 </div>
             </div>
 
-            <div id = "fileDiv" class = "animated bounceIn">
-                <a href = "mycdr:\\192.168.1.14\Public\2.cdr">
-                    <img src = "images/cdrlogo.png">
-                    <p class = "fileName">鑫源-科室牌.cdr</p>
-                </a>
-            </div>
-
             <div class="row animated bounceIn" id = "steps">
                 <ul class="nav nav-pills stepNav">
                    <li role="presentation" class="active"><a href="#">1.产品信息</a></li>
@@ -52,7 +45,8 @@
                    <li role="presentation"><a href="#">3.打印设计</a></li>
                    <li role="presentation"><a href="#">4.完成下单</a></li>
                 </ul>
-                <div class = "btnGroup">
+                <span class = "fileName">文件名：<span>鑫源-科室牌.cdr</span></span>
+                <div class = "btnGroup pull-right">
                     <a href = "#" class = "btn btn-primary" id = "addBtn">添加项目</a>
                     <a href = "#" class = "btn btn-primary" id = "resetBtn">重置</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -125,17 +119,62 @@
                         </div>
                       </div>
 
+                      <div class="form-group">
+                        <label for="orderSteps" class="col-sm-4 control-label">工艺选择</label>
+                        <div class="col-sm-4 orderSteps">
+                          <p>
+                            <span class="label stepLabel">出片</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">型材下料</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">亚克力下料</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">铁艺加工</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">烤漆</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">丝印</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">UV</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">腐蚀填漆</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">外加工</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="label stepLabel">包装</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="tags" class="col-sm-4 control-label">订单标签</label>
+                        <div class="col-sm-4 tags">
+                          <p>
+                            <span class="label label-primary tagLabel"><span>鑫源</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>
+                            <span class="label label-primary tagLabel"><span>台牌</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>
+                          </p>
+                          <div class="input-group">
+                              <input type="text" class="form-control" id = "tags" placeholder="订单标签">
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" id = "tagsAddBtn">
+                                  添加
+                                </button>
+                              </span>
+                          </div>
+                        </div>
+                      </div>
+
                     </form>
                 </div>
 
                 <div id = "step3">
-                    <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "itemPic">
-                    <img src = "http://i.bjtdty.com/order/2015/12/1/1448940042725.jpg" width = "200" class = "itemPic">
-                    <canvas id = "myCanvas" width = "1000" height = "800"></canvas>
+                  <div class = "row">
+
+                    <div id = "imgToDesign" class = "col-sm-2 col-sm-offset-3">
+                      <img src = "http://i.bjtdty.com/order/2015/12/24/1450946603032.jpg" width = "200" class = "itemPic">
+                      <img src = "http://i.bjtdty.com/order/2015/12/1/1448940042725.jpg" width = "200" class = "itemPic">
+                    </div>
+
+                    <div id = "canvasDiv" class = "col-sm-6">
+                      <canvas id = "myCanvas" width = "646" height = "771"></canvas>
+                    </div>
+
+                  </div>
                 </div>
 
                 <div id = "step4">
-                    完成
+                    <iframe src="" id = "pdfPrview"></iframe>
                 </div>
 
             </div>
@@ -224,7 +263,6 @@
     
     <!-- 自定义js -->
     <script src="javascripts/fabric.min.js"></script>
-    <script src="javascripts/upbox.function.js"></script>
     <script src="javascripts/upbox.js"></script>
     <script src="javascripts/order.js"></script>
 

@@ -11,7 +11,6 @@ var app = express();
 var hbs = require('hbs');
 var mongoConnection = require('./credentials/mongoConnection.js');
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
