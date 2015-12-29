@@ -31,3 +31,5 @@ tmp
 db.js
 pdf.js
 test
+public/tmp
+public/imgTmp
