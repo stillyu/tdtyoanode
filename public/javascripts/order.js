@@ -217,16 +217,7 @@ $(function(){
     });
 
     var canvas = this.__canvas = new fabric.Canvas('myCanvas');
-    var rect = new fabric.Rect({
-        width: 1000, height: 800, left: 0, top: 0, angle: 0,
-        fill: 'rgba(255,255,255,1)',
-        hasControls : false,
-        hasBorders : true,
-        hasRotatingPoint : false,
-        selectable : false,
-        borderColor : 'rgba(0,0,0,1)',
-    });
-    canvas.add(rect);
+    canvas.setBackgroundColor('rgba(255, 255, 255, 1)');
 
     $(document).on("click",".picToDesign",function(){
         var src = $(this).attr("src");
@@ -257,25 +248,35 @@ $(function(){
             }).scale(1);
             canvas.add(oImg).renderAll();
             canvas.setActiveObject(oImg); 
-        },{
-            crossOrigin : "anonymous",
         });
     }
 
     function savePic(){
         canvas.forEachObject(function(item,key){
-            if(key != 0)
-                item['hasControls'] = false;
-                item['hasBorders'] = false;
+            item['hasControls'] = false;
+            item['hasBorders'] = false;
         });
         canvas.renderAll();
-        var c = document.getElementById('myCanvas');
-        var base64 = c.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        var canvasDataJson = JSON.stringify(canvas);
+        canvasDataJson = JSON.parse(canvasDataJson);
+        // console.log(canvas.toDataURL("image/png"));
+        var postDataArr = new Array();
+        var json = "[";
+        for(var i = 0; i < canvasDataJson.objects.length; i++){
+            json +=     "{";
+            json +=         "imgSrc : '" +  canvasDataJson.objects[i].src + "',";
+            json +=         "left : '" +  canvasDataJson.objects[i].left + "',";
+            json +=         "top : '" +  canvasDataJson.objects[i].top + "',";
+            json +=         "width : '" +  canvasDataJson.objects[i].width * canvasDataJson.objects[i].scaleX + "',";
+            json +=         "height : '" +  canvasDataJson.objects[i].height * canvasDataJson.objects[i].scaleY + "',";
+            json +=     "},";
+        }
+        json +=  "]";
         $.ajax({
             async : false,
             type : 'post',
             url : '/api/generatePdf',
-            data : {base64 : base64},
+            data : {"jsonStr" : json},
             success : function(data){
                 $("#pdfPrview").attr("src",data);
             }
@@ -301,17 +302,21 @@ $(function(){
 
     function designResourceLoad(){
         canvas.forEachObject(function(item,key){
-            if(key != 0)
-                item.remove();
+            item.remove();
         });
         $("#imgToDesign").html("");
         var htmlStr = "";
+        var itemCount = 0;
         $(".orderTable tbody tr").each(function(){
             src = $(this).find("td").find("img").attr("src");
             htmlStr += "<img src = '" + src + "' width = '200' class = 'picToDesign'>";
+            itemCount++;
         })
+        $("#myCanvas").attr("height",603-21*itemCount);
+        $("#myCanvas").css("height",603-21*itemCount + "px");
         $("#imgToDesign").append(htmlStr);
         fabricItem = 1;
+        alert($("#myCanvas").attr("height"));
     }
 });
 

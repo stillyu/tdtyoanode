@@ -64,9 +64,11 @@ api.post('/imgUpload', function(req, res, next) {
 });
 
 api.post('/generatePdf', function(req, res, next) {
-    var base64 = req.body.base64;
-    var url = pdf.generatePdf(base64);
-    res.send(url);
+    jsonStr = req.body.jsonStr;
+    json = eval('(' + jsonStr + ')');
+
+    var url = pdf.generatePdf(json);
+    res.send("success");
 });
 
 
