@@ -3,32 +3,32 @@ var orderSchema = mongoose.Schema({
     orderId : Number,
     customer : {user : mongoose.Schema.ObjectId},
     clerk : {user : mongoose.Schema.ObjectId},
+    file : String,
     detail : [
         {
-            id : Number,
             name : String,
             specification : String,
             pic : String,
-            unit : String,
             price : Number,
             count : Number,
             sum : Number,
             glossiness : String,
-            remark : String,
         }
     ],
     tags : [String],
     time : Date,
     expectedTime : Date,
-    receiver : {address : mongoose.Schema.ObjectId},
+    expectedLogisticsWay : String,
+    receiver : {user : mongoose.Schema.ObjectId},
     sum : Number,
     paid : Number,
     unpaid : Number,
-    remark : Number,
+    remark : String,
     step : [
         {
             name : String,
             complete : Boolean,
+            user : mongoose.Schema.ObjectId,
         }
     ],
     express : {
@@ -45,6 +45,15 @@ var orderSchema = mongoose.Schema({
         financeId : mongoose.Schema.ObjectId,
         paid : Number,
     },
+    print :[
+        {
+            imgSrc : String,
+            left : Number,
+            top : Number,
+            width : Number,
+            height : Number,
+        }
+    ]
 });
 orderSchema.methods.getOrderDate = function(){
     var time = this.time;

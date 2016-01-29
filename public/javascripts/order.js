@@ -10,7 +10,7 @@ $(function(){
         swf: '/H/js/plugins/webuploader/Uploader.swf',
 
         // 文件接收服务端。
-        server: '/api/fileUpload',
+        server: 'http://192.168.1.14/fileUpload.php',
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -50,6 +50,9 @@ $(function(){
         $("#progressModal").addClass("bounceOut");
         $("#uploadDiv").addClass("animated").addClass("bounceOut");
         $(".fileName span").text(file.name);
+        var myDate = new Date();
+        var ymd = myDate.getFullYear() + '/' + myDate.getMonth() + 1 + '/' + myDate.getDate() + '/';
+        $(".fileName").parent().attr("href","mycdr://192.168.1.14/ftp/" + ymd + file.name);
         setTimeout("$('#uploadDiv').remove();",800);
         setTimeout("$('#fileDiv').show();",800);
         setTimeout("$('#steps').show();",800);
@@ -87,6 +90,7 @@ $(function(){
             $(".stepNav li").removeClass("active");
             $(".stepNav li:eq(2)").addClass("active");
             $("#nextBtn").text("下一步");
+            $("#nextBtn").removeClass("orderSubmitBtn");
             $("#step1").hide();
             $("#step2").hide();
             $("#step3").show();
@@ -97,6 +101,7 @@ $(function(){
             $("#resetBtn").hide();
             $("#previousBtn").attr("disabled",false);
             $("#nextBtn").text("确定下单");
+            $("#nextBtn").addClass("orderSubmitBtn");
             $(".stepNav li").removeClass("active");
             $(".stepNav li:eq(3)").addClass("active");
             $("#step1").hide();
@@ -212,7 +217,7 @@ $(function(){
 
     //外部js调用
     laydate({
-        elem: '#expectedDate', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+        elem: '#expectedTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
         event: 'focus', //响应事件。如果没有传入event，则按照默认的click
     });
 
@@ -232,9 +237,8 @@ $(function(){
         $(this).remove();
     })
     $("#tagsAddBtn").click(function(){
-        $(".tags p").append("<span class = 'label label-primary tagLabel'><span>"+ $("#tags").val() + "</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>");
+        $(".tags p").append("<span class = 'label label-primary tagLabel'><span>"+ $("#tags").val() + "</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>&nbsp;&nbsp;&nbsp;&nbsp;");
         $("#tags").val("");
-        alert($(".tagLabel:eq(0)").find("span").text());
     })
     function addImage(src,displayWidth,displayHeight){
         fabric.Image.fromURL(src, function(img) {
@@ -257,21 +261,9 @@ $(function(){
             item['hasBorders'] = false;
         });
         canvas.renderAll();
-        var canvasDataJson = JSON.stringify(canvas);
-        canvasDataJson = JSON.parse(canvasDataJson);
-        // console.log(canvas.toDataURL("image/png"));
-        var postDataArr = new Array();
-        var json = "[";
-        for(var i = 0; i < canvasDataJson.objects.length; i++){
-            json +=     "{";
-            json +=         "imgSrc : '" +  canvasDataJson.objects[i].src + "',";
-            json +=         "left : '" +  canvasDataJson.objects[i].left + "',";
-            json +=         "top : '" +  canvasDataJson.objects[i].top + "',";
-            json +=         "width : '" +  canvasDataJson.objects[i].width * canvasDataJson.objects[i].scaleX + "',";
-            json +=         "height : '" +  canvasDataJson.objects[i].height * canvasDataJson.objects[i].scaleY + "',";
-            json +=     "},";
-        }
-        json +=  "]";
+        orderDataJson = getOrderJson();
+        json = JSON.stringify(orderDataJson);
+        console.log(json);
         $.ajax({
             async : false,
             type : 'post',
@@ -283,14 +275,26 @@ $(function(){
         })
     }
 
-    var typeSuggest = $("#customer").bsSuggest({
+    customerSugg = $("#customer").bsSuggest({
         url : "api/getCustomer",
         showBtn: false,
         effectiveFields: ["realName","company"],
         keyField: "realName",
         idField : "_id",
         effectiveFieldsAlias : {"realName" : "姓名","company" : "公司"},
-    })
+    }).on('onSetSelectValue', function (e, keyword) {
+        $("#receiver").val(keyword.key);
+        $("#receiver").data("id",keyword.id);
+    });
+
+    receiverSugg = $("#receiver").bsSuggest({
+        url : "api/getReceiver",
+        showBtn: false,
+        effectiveFields: ["realName","address"],
+        keyField: "realName",
+        idField : "_id",
+        effectiveFieldsAlias : {"realName" : "姓名","address" : "地址"},
+    });
 
     $(".stepLabel").click(function(){
         $(this).toggleClass("label-primary");
@@ -315,9 +319,128 @@ $(function(){
         $("#myCanvas").attr("height",603-21*itemCount);
         $("#myCanvas").css("height",603-21*itemCount + "px");
         $("#imgToDesign").append(htmlStr);
-        fabricItem = 1;
-        alert($("#myCanvas").attr("height"));
     }
+//点击添加新客户
+    $("#addNewCustomerBtn").click(function(){
+        $("#addNewUserModal").modal("show");
+        $("#userSubmitBtn").data("userType","customer");
+        $(".addNewUserModalHeader").text("增加新客户");
+    })
+//点击添加新收货人
+    $("#addNewReceiverBtn").click(function(){
+        $("#addNewUserModal").modal("show");
+        $("#userSubmitBtn").data("userType","receiver");
+        $(".addNewUserModalHeader").text("增加收货人");
+    })
+    $(document).on("click","#userSubmitBtn",function(){
+        $.ajax({
+            type : 'post',
+            data : {
+                "realName" : $("#realName").val(),
+                "company" : $("#company").val(),
+                "phone" : $("#phone").val(),
+                "mobilePhone" : $("#mobilePhone").val(),
+                "address" : $("#address").val(),
+                "userType" : $("#userSubmitBtn").data("userType"),
+            },
+            url : 'api/addNewUser',
+            success : function(data){
+                if(data == "fail")
+                    alert("该姓名已存在!");
+                $("#addNewUserModal").modal("hide");
+                $("#customer").bsSuggest("destroy");
+                $("#receiver").bsSuggest("destroy");
+                customerSugg = $("#customer").bsSuggest({
+                    url : "api/getCustomer",
+                    showBtn: false,
+                    effectiveFields: ["realName","company"],
+                    keyField: "realName",
+                    idField : "_id",
+                    effectiveFieldsAlias : {"realName" : "姓名","company" : "公司"},
+                }).on('onSetSelectValue', function (e, keyword) {
+                    $("#receiver").val(keyword.key);
+                    $("#receiver").data("id",keyword.id);
+                });
+
+                receiverSugg = $("#receiver").bsSuggest({
+                    url : "api/getReceiver",
+                    showBtn: false,
+                    effectiveFields: ["realName","address"],
+                    keyField: "realName",
+                    idField : "_id",
+                    effectiveFieldsAlias : {"realName" : "姓名","address" : "地址"},
+                });
+            },
+        })
+    })
+//点击确定下单
+    $(document).on("click",".orderSubmitBtn",function(){
+        
+    })
+
+    function getOrderJson(){
+        var tags = [];
+        $(".tagLabel").each(function(){
+            tags.push($(this).find("span").text());
+        })
+        orderSum = 0;
+        $(".itemSum").each(function(){
+            orderSum += parseInt($(this).text());
+        })
+        var step = [];
+        $(".stepLabel").each(function(){
+            if($(this).hasClass("label-primary")){
+                var stepDetail = {
+                    name : $(this).text(),
+                    complete : false,
+                }
+                step.push(stepDetail);
+            }
+        })
+        var detail = [];
+        $(".orderTable tbody tr").each(function(){
+            var itemJson = {
+                pic : $(this).find("td:eq(0)").find("img").attr("src"),
+                itemName : $(this).find("td:eq(1)").find("span:eq(0)").text(),
+                specification : $(this).find("td:eq(1)").find("span:eq(1)").text(),
+                glossiness : $(this).find("td:eq(1)").find("span:eq(2)").text(),
+                price : $(this).find("td:eq(2)").text(),
+                count : $(this).find("td:eq(3)").text(),
+                sum : $(this).find("td:eq(4)").text(),
+            }
+            detail.push(itemJson);
+        })
+        var img = [];
+        var canvasDataJson = JSON.stringify(canvas);
+        canvasDataJson = JSON.parse(canvasDataJson);
+        for(var i = 0; i < canvasDataJson.objects.length; i++){
+            imgJson = {
+                        imgSrc :  canvasDataJson.objects[i].src,
+                        left : canvasDataJson.objects[i].left,
+                        top : canvasDataJson.objects[i].top,
+                        width : canvasDataJson.objects[i].width * canvasDataJson.objects[i].scaleX,
+                        height : canvasDataJson.objects[i].height * canvasDataJson.objects[i].scaleY,
+            };
+            img.push(imgJson);
+        }
+        var orderJson = {
+            customer : $("#customer").data("id"),
+            file : $(".fileName").parent().attr("href").substr(8),
+            tags : tags,
+            time : (new Date()).valueOf() / 1000,
+            expectedTime : Date.parse(new Date($("#expectedTime").val().replace(/-/g,'/'))) / 1000,
+            receiver : $("#receiver").data("id"),
+            sum : orderSum,
+            paid : 0,
+            unpaid : orderSum,
+            remark : $("#remark").val(),
+            step : step,
+            expectLogisticsWay : $("#logisticsWay").val(),
+            detail : detail,
+            print : img,
+        };
+        return orderJson;
+    }//end of getOrderJson
 });
 
 (function() {
