@@ -22,14 +22,14 @@
 				Y = e.pageY,
 				x = m.p.left + (X - m.x) - W.scrollLeft(),
 				y = m.p.top  + (Y - m.y) - W.scrollTop();
-			//以下逻辑保证在可视范围内移动		
+			//以下逻辑保证在可视范围内移动
 			if (l <= 0 && X < m.x)
 			{
 				x = 0;
 				m.x = Math.max(X, 0);
 				m.p.left = 0;
 			}
-			if (t <= 0 && Y < m.y) 
+			if (t <= 0 && Y < m.y)
 			{
 				y = 0;
 				m.y = Math.max(Y, 0);

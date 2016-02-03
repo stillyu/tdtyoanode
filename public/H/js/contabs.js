@@ -138,16 +138,16 @@ $(function () {
             $('.J_menuTab').removeClass('active');
 
             // 添加选项卡对应的iframe
-            var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '?v=4.0" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
+            var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
             $('.J_mainContent').find('iframe.J_iframe').hide().parents('.J_mainContent').append(str1);
 
             //显示loading提示
-            var loading = layer.load();
-
-            $('.J_mainContent iframe:visible').load(function () {
-                //iframe加载完成后隐藏loading提示
-                layer.close(loading);
-            });
+//            var loading = layer.load();
+//
+//            $('.J_mainContent iframe:visible').load(function () {
+//                //iframe加载完成后隐藏loading提示
+//                layer.close(loading);
+//            });
             // 添加选项卡
             $('.J_menuTabs .page-tabs-content').append(str);
             scrollToTab($('.J_menuTab.active'));
@@ -278,12 +278,12 @@ $(function () {
     function refreshTab() {
         var target = $('.J_iframe[data-id="' + $(this).data('id') + '"]');
         var url = target.attr('src');
-        //显示loading提示
-        var loading = layer.load();
-        target.attr('src', url).load(function () {
-            //关闭loading提示
-            layer.close(loading);
-        });
+//        //显示loading提示
+//        var loading = layer.load();
+//        target.attr('src', url).load(function () {
+//            //关闭loading提示
+//            layer.close(loading);
+//        });
     }
 
     $('.J_menuTabs').on('dblclick', '.J_menuTab', refreshTab);

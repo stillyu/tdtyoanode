@@ -28,7 +28,7 @@ if ( contentType.indexOf("multipart/form-data") >= 0 )
 	//定义一个变量用以储存当前头像的序号
 	int avatarNumber = 1;
 	//取服务器时间+8位随机码作为部分文件名，确保文件名无重复。
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssS"); 
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssS");
 	String fileName = simpleDateFormat.format(new Date());
 	Random random = new Random();
 	String randomCode = "";
@@ -49,14 +49,14 @@ if ( contentType.indexOf("multipart/form-data") >= 0 )
 		//是否是原始图片 file 域的名称（默认的 file 域的名称是__source，可在插件配置参数中自定义。参数名：src_field_name）
 		Boolean isSourcePic = fieldName.equals("__source");
 		//文件名，如果是本地或网络图片为原始文件名（不含扩展名）、如果是摄像头拍照则为 *FromWebcam
-		//String name = fileItem.getName();	
+		//String name = fileItem.getName();
 		//当前头像基于原图的初始化参数（即只有上传原图时才会发送该数据），用于修改头像时保证界面的视图跟保存头像时一致，提升用户体验度。
 		//修改头像时设置默认加载的原图url为当前原图url+该参数即可，可直接附加到原图url中储存，不影响图片呈现。
 		if ( fieldName.equals("__initParams") )
 		{
 			inputStream = new BufferedInputStream(fileItem.openStream());
 			byte[] bytes = new byte [inputStream.available()];
-			inputStream.read(bytes); 
+			inputStream.read(bytes);
 			initParams = new String(bytes, "UTF-8");
 			inputStream.close();
 		}
@@ -91,10 +91,10 @@ if ( contentType.indexOf("multipart/form-data") >= 0 )
 				upload_url: "Upload.asp?user=xxx"
 			});
 			即可如下获取user的值xxx
-		
+
 			inputStream = new BufferedInputStream(fileItem.openStream());
 			byte[] bytes = new byte [inputStream.available()];
-			inputStream.read(bytes); 
+			inputStream.read(bytes);
 			String user = new String(bytes, "UTF-8");
 			inputStream.close();
 		}*/

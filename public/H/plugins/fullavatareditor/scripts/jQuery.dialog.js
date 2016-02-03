@@ -108,7 +108,7 @@
 		},
 		//[按钮] - array
 		*/
-		button : 
+		button :
 		[
 			{
 				text : '确认'
@@ -129,13 +129,13 @@
 		offset			: {
 			top : 'middel',
 			/*
-				可使用值枚举: 
+				可使用值枚举:
 				字符('top'||'middel'||'bottom'||'xpx'||'%50')
 				数字(表示多少像素，与字符值'xpx'同等效果)
 			*/
 			left : 'center'
 			/*
-				可使用值枚举: 
+				可使用值枚举:
 				字符('left'||'center'||'right'||'80px'||'%60')
 				数字(表示多少像素，与字符值'xpx'同等效果)
 			,*/
@@ -157,7 +157,7 @@
 		onClose         : $.noop,
 		onEnter         : $.noop,
 		err				: {
-			title		: 'Error', 
+			title		: 'Error',
 			content		: '<p style="text-align:center">服务器繁忙或发生错误，请稍后再试！<br />The server is busy or unavailable, please try again later!</p>',
 			button		: 'Close'
 		},
@@ -356,11 +356,11 @@
 								if (v.error) v.error.call(e);
 							}
 						});
-						break; 
+						break;
 					case 'text' :
 						c.removeClass(CSS.LOADING).html(v);
 						e._ready(b,z);
-						break; 
+						break;
 					case 'selector' :
 						//使用API方式设置内容时如果有需要恢复到原始位置的元素，将其恢复
 						e.recovery && e.recovery();
@@ -625,7 +625,7 @@
 			if (set)
 			{
 				e.wrapper.css({
-					top	 : offset.top, 
+					top	 : offset.top,
 					left : offset.left
 				});
 				e.lastOffset = offset;
@@ -634,7 +634,7 @@
 		},
 		//开启或关闭固定定位。参数为false时为关闭，不带参数或参数值为非false时为开启
 		fixed : function (v) {
-			if (v === false) 
+			if (v === false)
 			{
 				this.wrapper.css('position','absolute');
 			}
@@ -725,7 +725,7 @@
 		},
 		//开启或关闭大小缩放。参数为false时为关闭，不带参数或参数值为非false时为开启
 		resizable : function (v) {
-			var e = this, 
+			var e = this,
 				c = e.dom().content,
 				r =  e.dom().resizer;
 			if (v === false)
@@ -741,7 +741,7 @@
 		},
 		//倒计时关闭
 		timeout : function (s, t) {
-			var e = this, 
+			var e = this,
 				o = e.o.timeout,
 				second, text,
 				d = e.dom().foot,
@@ -868,7 +868,7 @@
 			return e;
 		},
 		__init : function(){
-			var e = this, 
+			var e = this,
 				o = e.o;
 			e.title(o.title)
 			.tab(o.tab)
@@ -1055,7 +1055,7 @@
 				b = e._eventName(EVENT.C);
 			//置顶事件
 			e.wrapper.unbind(EVENT.A).bind(EVENT.A, $.proxy(function () {
-				if (this.child != null) 
+				if (this.child != null)
 				{
 					this.child.shake();
 					return false;
@@ -1077,7 +1077,7 @@
 					event.result !== false && e.close();
 					return false;
 				}
-				if(event.which === 13 && !e.wrapper.hasClass(CSS.NOTONTOP)) 
+				if(event.which === 13 && !e.wrapper.hasClass(CSS.NOTONTOP))
 				{
 					e.o.onEnter();
 					e.dom().button.children('.' + CSS.ENTCLICK).triggerHandler(EVENT.B);
@@ -1126,7 +1126,7 @@
 		o.refer = o.trigger = this;
 		return $.dialog(o);
 	}
-$.dialog.template = 
+$.dialog.template =
 	'<table class="jQ_Dialog">'
 +		'<thead>'
 +			'<tr>'

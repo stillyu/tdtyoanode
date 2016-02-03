@@ -1,10 +1,7 @@
 //自定义js
 
 //公共配置
-layer.config({
-    extend: ['extend/layer.ext.js', 'skin/moon/style.css'],
-    skin: 'layer-ext-moon'
-});
+
 
 $(document).ready(function () {
 
@@ -137,7 +134,7 @@ function SmoothlyMenu() {
 }
 
 
-//主题设置    
+//主题设置
 $(function () {
 
     // 顶部菜单固定

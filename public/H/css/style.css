@@ -3721,7 +3721,7 @@ nav.page-tabs .page-tabs-content {
 }
 
 #content-main {
-    height: calc(100% - 80px);
+    height: calc(100% - 140px);
     overflow: hidden;
 }
 
@@ -4905,7 +4905,6 @@ ul.clear-list:first-child {
 
 .timeline-item .date {
     text-align: right;
-    width: 110px;
     position: relative;
     padding-top: 30px;
 }
@@ -4914,7 +4913,7 @@ ul.clear-list:first-child {
     border-left: 1px solid #e7eaec;
     border-top: 1px solid #e7eaec;
     padding-top: 10px;
-    min-height: 100px;
+    min-height: 150px;
 }
 
 .timeline-item .content:hover {

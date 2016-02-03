@@ -68,7 +68,7 @@ Set Upload = new AnUpLoad
 					'如果 file 域的名称是以__source（可在插件配置参数中自定义，参数名：src_field_name）打头，说明是原始图片，如果在插件中定义可以上传的话，可在此处理。
 					If InStr(File.FormName, "__source") = 1 Then
 						'保存的文件名，不包括扩展名
-						File.UserSetName = "asp_source_" & FileName 
+						File.UserSetName = "asp_source_" & FileName
 						'保存的文件扩展名，不含点“.”
 						File.Extend = "jpg"
 						'当前头像基于原图的初始化参数（即只有上传原图时才会发送该数据），用于修改头像时保证界面的视图跟保存头像时一致，提升用户体验度。

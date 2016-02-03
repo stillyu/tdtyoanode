@@ -18,8 +18,8 @@
 				d = a.height() - b.height();
 				f = a.offset();
 			}
-			var m = $.extend({ 
-					width  : win.width() - (f.left - doc.scrollLeft()) - c, 
+			var m = $.extend({
+					width  : win.width() - (f.left - doc.scrollLeft()) - c,
 					height : win.height() - (f.top - doc.scrollTop()) - d
 				}, o.max),
 				w = Math.min(Math.max(e.pageX - o.x + o.w, o.min.width), m.width),
@@ -37,7 +37,7 @@
 			E.y = e.pageY;
 			E.w = T.outerWidth()  - T.getPadding().w;
 			E.h = T.outerHeight() - T.getPadding().h;
-			if (E.min.width  === 0) 
+			if (E.min.width  === 0)
 			{
 				var MW = T.data('_mw');
 				if (MW)
@@ -99,11 +99,11 @@
 	};
 	$.fn.getPadding = function () {
 		var s = this[0].style,
-			o = 
-			{ 
+			o =
+			{
 				w : parseInt(s.paddingLeft) + parseInt(s.paddingRight)  || 0,
 				h : parseInt(s.paddingTop) +  parseInt(s.paddingBottom) || 0
 			};
-		return o; 
+		return o;
 	};
 })($);
