@@ -48,7 +48,8 @@
                 <a href = "javascript:void(0)"><span class = "fileName">文件名：<span>鑫源-科室牌.cdr</span></span></a>
                 <div class = "btnGroup pull-right">
                     <a href = "#" class = "btn btn-primary" id = "addBtn">添加项目</a>
-                    <a href = "#" class = "btn btn-primary" id = "resetBtn">重置</a>
+                    <a href = "#" class = "btn btn-primary" id = "reloadBtn">再下一单</a>
+                    <a href = "#" class = "btn btn-primary" id = "resetBtn">加载图片</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <a href = "#" class = "btn btn-primary" id = "previousBtn">上一步</a>
                     <a href = "#" class = "btn btn-primary" id = "nextBtn">下一步</a>
@@ -157,8 +158,8 @@
                         <label for="tags" class="col-sm-4 control-label">订单标签</label>
                         <div class="col-sm-4 tags">
                           <p>
-                            <span class="label label-primary tagLabel"><span>鑫源</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>
-                            <span class="label label-primary tagLabel"><span>台牌</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>
+<!--                             <span class="label label-primary tagLabel"><span>鑫源</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>
+                            <span class="label label-primary tagLabel"><span>台牌</span>&nbsp;&nbsp;&nbsp;&nbsp;&times;</span> -->
                           </p>
                           <div class="input-group">
                               <input type="text" class="form-control" id = "tags" placeholder="订单标签">
@@ -189,7 +190,14 @@
                 </div>
 
                 <div id = "step4">
-                    <iframe src="" id = "pdfPrview" width = "800" height = "1200"></iframe>
+<!--                     <div id = "orderPreview">下单完成</div> -->
+                    <div id = "orderSubmitDiv">
+                      <a href = 'javascript:void(0);' class = "btn btn-primary orderSubmitBtn" id = "orderSubmitBtn">确定下单</a>
+                    </div>
+                    <div id = 'test'>
+                        以下为测试代码,若无法下单,请复制以下代码发给我
+                        <div id = 'testCode'></div>
+                    </div>
                 </div>
 
             </div>
@@ -337,7 +345,8 @@
     <!-- 自定义js -->
     <script src="javascripts/fabric.min.js"></script>
 
-    <script src="javascripts/upbox.js"></script>
+    <script src="javascripts/upbox2.js"></script>
+    <script src="javascripts/upbox.function.js"></script>
     <script src="javascripts/order.js"></script>
 
 </body>

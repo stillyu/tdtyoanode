@@ -3721,7 +3721,7 @@ nav.page-tabs .page-tabs-content {
 }
 
 #content-main {
-    height: calc(100% - 140px);
+    height: calc(100% - 80px);
     overflow: hidden;
 }
 
@@ -4031,7 +4031,7 @@ code {
     color: inherit;
     margin-bottom: 0;
     padding: 14px 15px 7px;
-    min-height: 48px;
+    min-height: 60px;
 }
 
 .ibox-content {
@@ -5459,17 +5459,15 @@ dd.project-people {
 .message-avatar {
     height: 48px;
     width: 48px;
-    border: 1px solid #e7eaec;
-    border-radius: 4px;
-    margin-top: 1px;
+    line-height: 48px;
 }
 
-.chat-discussion .chat-message:nth-child(2n+1) .message-avatar {
+.chat-discussion .chat-message .chat-left .message-avatar {
     float: left;
     margin-right: 10px;
 }
 
-.chat-discussion .chat-message:nth-child(2n) .message-avatar {
+.chat-discussion .chat-message .chat-right .message-avatar {
     float: right;
     margin-left: 10px;
 }
@@ -5484,20 +5482,20 @@ dd.project-people {
     border-radius: 4px;
 }
 
-.chat-discussion .chat-message:nth-child(2n+1) .message-date {
+.chat-discussion .chat-message .chat-right .message-date {
     float: right;
 }
 
-.chat-discussion .chat-message:nth-child(2n) .message-date {
+.chat-discussion .chat-message .chat-left .message-date {
     float: left;
 }
 
-.chat-discussion .chat-message:nth-child(2n+1) .message {
+.chat-discussion .chat-message .chat-left .message {
     text-align: left;
     margin-left: 55px;
 }
 
-.chat-discussion .chat-message:nth-child(2n) .message {
+.chat-discussion .chat-message .chat-right .message {
     text-align: right;
     margin-right: 55px;
 }
@@ -5514,7 +5512,7 @@ dd.project-people {
 .chat-discussion {
     background: #eee;
     padding: 15px;
-    height: 400px;
+    height: 600px;
     overflow-y: auto;
 }
 

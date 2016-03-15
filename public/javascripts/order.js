@@ -10,7 +10,7 @@ $(function(){
         swf: '/H/js/plugins/webuploader/Uploader.swf',
 
         // 文件接收服务端。
-        server: 'http://192.168.1.14/fileUpload.php',
+        server: 'http://10.0.0.4/fileUpload.php',
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -51,8 +51,10 @@ $(function(){
         $("#uploadDiv").addClass("animated").addClass("bounceOut");
         $(".fileName span").text(file.name);
         var myDate = new Date();
-        var ymd = myDate.getFullYear() + '/' + myDate.getMonth() + 1 + '/' + myDate.getDate() + '/';
-        $(".fileName").parent().attr("href","mycdr://192.168.1.14/ftp/" + ymd + file.name);
+        var month = parseInt(myDate.getMonth()) + parseInt(1);
+        var day = parseInt(myDate.getDate());
+        var ymd = myDate.getFullYear() + '/' + month + '/' + day + '/';
+        $(".fileName").parent().attr("href","tdtyoa://10.0.0.4/共享/订单/" + ymd + file.name);
         setTimeout("$('#uploadDiv').remove();",800);
         setTimeout("$('#fileDiv').show();",800);
         setTimeout("$('#steps').show();",800);
@@ -64,6 +66,7 @@ $(function(){
         if(step == 1){
             $("#addBtn").show();
             $("#resetBtn").hide();
+            $("#reloadBtn").hide();
             $("#previousBtn").attr("disabled",true);
             $(".stepNav li").removeClass("active");
             $(".stepNav li:eq(0)").addClass("active");
@@ -75,6 +78,7 @@ $(function(){
         else if(step == 2){
             $("#addBtn").hide();
             $("#resetBtn").hide();
+            $("#reloadBtn").hide();
             $("#previousBtn").attr("disabled",false);
             $(".stepNav li").removeClass("active");
             $(".stepNav li:eq(1)").addClass("active");
@@ -86,11 +90,12 @@ $(function(){
         else if(step == 3){
             $("#addBtn").hide();
             $("#resetBtn").show();
+            $("#reloadBtn").hide();
             $("#previousBtn").attr("disabled",false);
+            $("#nextBtn").attr("disabled",false);
             $(".stepNav li").removeClass("active");
             $(".stepNav li:eq(2)").addClass("active");
             $("#nextBtn").text("下一步");
-            $("#nextBtn").removeClass("orderSubmitBtn");
             $("#step1").hide();
             $("#step2").hide();
             $("#step3").show();
@@ -99,9 +104,9 @@ $(function(){
         else if(step == 4){
             $("#addBtn").hide();
             $("#resetBtn").hide();
+            $("#reloadBtn").show();
             $("#previousBtn").attr("disabled",false);
-            $("#nextBtn").text("确定下单");
-            $("#nextBtn").addClass("orderSubmitBtn");
+            $("#nextBtn").attr("disabled",true);
             $(".stepNav li").removeClass("active");
             $(".stepNav li:eq(3)").addClass("active");
             $("#step1").hide();
@@ -121,9 +126,9 @@ $(function(){
         if(step == 4)
             return 0;
         step++;
-        btnStatusCkeck(step);
         if(step == 4)
-            savePic();
+            orderPreview();
+        btnStatusCkeck(step);
     });
 
     $("#addBtn").click(function(){
@@ -140,6 +145,9 @@ $(function(){
         parent.empty();
         parent.attr("contentEditable","true");
         parent.css("border","1px dashed grey");
+    })
+    $("#reloadBtn").click(function(){
+        window.location.reload();
     })
     //总价自动变化    
     $("#price").change(function(){
@@ -254,8 +262,10 @@ $(function(){
             canvas.setActiveObject(oImg); 
         });
     }
-
-    function savePic(){
+    function orderPreview(){
+        $("#orderPreview").text("点击确定下单按钮完成下单");
+    }
+    $(".orderSubmitBtn").click(function(){
         canvas.forEachObject(function(item,key){
             item['hasControls'] = false;
             item['hasBorders'] = false;
@@ -263,17 +273,49 @@ $(function(){
         canvas.renderAll();
         orderDataJson = getOrderJson();
         json = JSON.stringify(orderDataJson);
-        console.log(json);
+        $("#testCode").text(json);
         $.ajax({
             async : false,
             type : 'post',
-            url : '/api/generatePdf',
-            data : {"jsonStr" : json},
+            url : '/api/userCheck',
+            data : {userId : $("#customer").data("id")},
             success : function(data){
-                $("#pdfPrview").attr("src",data);
+                if(data != 'success'){
+                    alert("客户填写错误,请检查!");
+                }
+                else{
+                    $.ajax({
+                        async : false,
+                        type : 'post',
+                        url : '/api/userCheck',
+                        data : {userId : $("#receiver").data("id")},
+                        success : function(data){
+                            if(data != 'success')
+                                alert("收货人填写错误,请检查!")
+                            else{
+                                $.ajax({
+                                    async : false,
+                                    type : 'post',
+                                    url : '/api/orderSubmit',
+                                    data : {"jsonStr" : json},
+                                    success : function(data){
+                                        console.log(data);
+                                        if(data == "price error")
+                                            alert("价格填写错误,请检查!")
+                                        else{
+                                            $("#orderSubmitBtn").hide();
+                                            $("#orderSubmitDiv").append("<a href = '" + data + "' class = 'btn btn-primary' target = '_blank'>下单完成,点击打印</a>");
+                                            $("#previousBtn").attr("disabled",true);
+                                        }
+                                    }
+                                });
+                            }
+                        },
+                    });
+                }
             }
-        })
-    }
+        });
+    })
 
     customerSugg = $("#customer").bsSuggest({
         url : "api/getCustomer",
@@ -282,9 +324,6 @@ $(function(){
         keyField: "realName",
         idField : "_id",
         effectiveFieldsAlias : {"realName" : "姓名","company" : "公司"},
-    }).on('onSetSelectValue', function (e, keyword) {
-        $("#receiver").val(keyword.key);
-        $("#receiver").data("id",keyword.id);
     });
 
     receiverSugg = $("#receiver").bsSuggest({
@@ -373,10 +412,6 @@ $(function(){
             },
         })
     })
-//点击确定下单
-    $(document).on("click",".orderSubmitBtn",function(){
-        
-    })
 
     function getOrderJson(){
         var tags = [];
@@ -396,18 +431,20 @@ $(function(){
                 }
                 step.push(stepDetail);
             }
-        })
+        });
         var detail = [];
         $(".orderTable tbody tr").each(function(){
             var itemJson = {
                 pic : $(this).find("td:eq(0)").find("img").attr("src"),
-                itemName : $(this).find("td:eq(1)").find("span:eq(0)").text(),
+                name : $(this).find("td:eq(1)").find("span:eq(0)").text(),
                 specification : $(this).find("td:eq(1)").find("span:eq(1)").text(),
                 glossiness : $(this).find("td:eq(1)").find("span:eq(2)").text(),
                 price : $(this).find("td:eq(2)").text(),
                 count : $(this).find("td:eq(3)").text(),
                 sum : $(this).find("td:eq(4)").text(),
             }
+            if(itemJson.pic == undefined)
+                itemJson.pic = "http://i.bjtdty.com/order/default.jpg";
             detail.push(itemJson);
         })
         var img = [];
@@ -427,17 +464,18 @@ $(function(){
             customer : $("#customer").data("id"),
             file : $(".fileName").parent().attr("href").substr(8),
             tags : tags,
-            time : (new Date()).valueOf() / 1000,
-            expectedTime : Date.parse(new Date($("#expectedTime").val().replace(/-/g,'/'))) / 1000,
+            time : (new Date()).valueOf(),
+            expectedTime : Date.parse(new Date($("#expectedTime").val().replace(/-/g,'/'))),
             receiver : $("#receiver").data("id"),
             sum : orderSum,
             paid : 0,
             unpaid : orderSum,
             remark : $("#remark").val(),
             step : step,
-            expectLogisticsWay : $("#logisticsWay").val(),
+            expectedLogisticsWay : $("#logisticsWay").val(),
             detail : detail,
             print : img,
+            fileName : $(".fileName span").text(),
         };
         return orderJson;
     }//end of getOrderJson

@@ -131,3 +131,18 @@
 	margin-top: 10px;
 	overflow: auto;
 }
+#step4{
+	width: 100%;
+}
+#orderSubmitDiv{
+	margin: 0 auto;
+	width : 200px;
+}
+#test{
+	border: 1px solid grey;
+	width: 500px;
+	margin: 0 auto;
+}
+#testCode{
+	width: 500px;
+}

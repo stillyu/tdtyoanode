@@ -1,0 +1,49 @@
+style.css
+3724行
+    height: calc(100% - 80px);
+4893行 date width删掉   content min-height : 150px;
+4034行 min-height : 60px;
+5495行
+.message-avatar {
+    height: 48px;
+    width: 48px;
+    line-height: 48px;
+}
+
+.chat-discussion .chat-message .chat-left .message-avatar {
+    float: left;
+    margin-right: 10px;
+}
+
+.chat-discussion .chat-message .chat-right .message-avatar {
+    float: right;
+    margin-left: 10px;
+}
+
+.message {
+    background-color: #fff;
+    border: 1px solid #e7eaec;
+    text-align: left;
+    display: block;
+    padding: 10px 20px;
+    position: relative;
+    border-radius: 4px;
+}
+
+.chat-discussion .chat-message .chat-right .message-date {
+    float: right;
+}
+
+.chat-discussion .chat-message .chat-left .message-date {
+    float: left;
+}
+
+.chat-discussion .chat-message .chat-left .message {
+    text-align: left;
+    margin-left: 55px;
+}
+
+.chat-discussion .chat-message .chat-right .message {
+    text-align: right;
+    margin-right: 55px;
+}

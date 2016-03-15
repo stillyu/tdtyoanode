@@ -155,7 +155,7 @@ $(function () {
         return false;
     }
 
-    $('.J_menuItem').on('click', menuItem);
+    $(document).on('click', '.J_menuItem',menuItem);
 
     // 关闭选项卡菜单
     function closeTab() {
@@ -308,3 +308,7 @@ $(function () {
     });
 
 });
+
+function subPage(id){
+    $(id).click();
+}

@@ -1,0 +1,57 @@
+.orderTable{
+	width: 100%;
+}
+.orderTable th{
+	height : 40px;
+	line-height: 40px;
+}
+.orderTable td,
+.orderTable th{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #1ab394;
+	text-align: center;
+}
+.orderTable thead tr th:nth-child(1){
+	width : 25%;
+}
+.orderTable thead tr th:nth-child(2){
+	width : 15%;
+}
+.orderTable thead tr th:nth-child(3){
+	width : 10%;
+}
+.orderTable thead tr th:nth-child(4){
+	width : 10%;
+}
+.orderTable thead tr th:nth-child(5){
+	width : 10%;
+}
+.orderTable thead tr th:nth-child(6){
+	width : 15%;
+}
+.orderTable thead tr th:nth-child(7){
+	width : 15%;
+}
+.label{
+	cursor: pointer;
+}
+.img-item{
+	margin: 5px 0;
+}
+#sideBar{
+	position: relative;
+	top: 11px;
+}
+#openFileTitle{
+	padding: 20px;
+}
+#openFileDiv{
+	cursor: pointer;
+}
+.chat-right{
+	float: right;
+}
+.chat-left{
+	float: left;
+}

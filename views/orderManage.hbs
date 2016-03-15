@@ -16,6 +16,7 @@
     <link href="H/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="H/css/animate.css" rel="stylesheet">
     <link href="H/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="javascripts/jPList/jplist.core.min.css" rel="stylesheet">
     <link href="stylesheets/orderManage.css?v=4.1.0" rel="stylesheet">
 
 </head>
@@ -24,122 +25,119 @@
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
             <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>基本</h5>
-                    </div>
-
-                    <div class="ibox-content timeline">
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-sm-1 date">
-                                    <i class="fa fa-file-text"></i> 2016-02-016
-                                    <br>
-                                    <small>张占飞</small>
-                                    <br>
-                                    <small class="text-info">收货人:肖光辉</small>
-                                    <br>
-                                    <small class="text-navy">350元</small>
-                                    <br>
-                                    <small class="text-success">已付完</small>
-                                    <br>
-                                    <a href = 'javascript:void(0)' class = 'btn btn-xs btn-primary'>查看</a>
-                                </div>
-                                <div class="col-sm-11 content">
-                                    <div class = 'itemImg'>
-                                        <img src = 'http://i.bjtdty.com/order/2016/1/8/1452238145925.jpg@1e_1c_0o_0l_110h_110w_100q.src' class = 'img-thumbnail'>
-                                        <br/>
-                                        科室牌
-                                    </div>
-                                    <div class = 'itemImg'>
-                                        <img src = 'http://i.bjtdty.com/order/2016/1/8/1452238145925.jpg@1e_1c_0o_0l_110h_110w_100q.src' class = 'img-thumbnail'>
-                                        <br/>
-                                        科室牌
-                                    </div>
-                                </div>
-                            </div>
+                <div class="ibox float-e-margins" id = 'timeLine'>
+                    <div class="ibox-title" id = 'panel'>
+                        <div class = 'form-group col-sm-1'>
+                            <select class = 'form-control input-sm' id = 'year'>
+                                <option value = '2015'>2015</option>
+                                <option value = '2016' selected>2016</option>
+                                <option value = '2017'>2017</option>
+                            </select>
                         </div>
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-sm-1 date">
-                                    <i class="fa fa-coffee"></i> 02-017
-                                    <br>
-                                    <small class="text-navy">张占飞</small>
-                                    <br>
-                                    <small class="text-navy">350元</small>
-                                    <br>
-                                    <small class="text-danger">350元未付</small>
-                                </div>
-                                <div class="col-sm-11 content">
-                                    <p class="m-b-xs"><strong>喝水、上厕所、做测试</strong>
-                                    </p>
-                                    <p>
-                                        喝了4杯水，上了3次厕所，控制台输出出2324个错误，神啊，带我走吧
-                                    </p>
-                                </div>
-                            </div>
+                        <div class = 'form-group col-sm-1'>
+                            <select class = 'form-control input-sm' id = 'month'>
+                                <option value = '1'>1</option>
+                                <option value = '2'>2</option>
+                                <option value = '3'>3</option>
+                                <option value = '4'>4</option>
+                                <option value = '5'>5</option>
+                                <option value = '6'>6</option>
+                                <option value = '7'>7</option>
+                                <option value = '8'>8</option>
+                                <option value = '9'>9</option>
+                                <option value = '10'>10</option>
+                                <option value = '11'>11</option>
+                                <option value = '12'>12</option>
+                                <option value = '0'>全年</option>
+                            </select>
                         </div>
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-sm-1 date">
-                                    <i class="fa fa-phone"></i> 02-018
-                                    <br>
-                                    <small class="text-navy">21小时前</small>
-                                </div>
-                                <div class="col-sm-11 content">
-                                    <p class="m-b-xs"><strong>项目经理打电话来了</strong>
-                                    </p>
-                                    <p>
-                                        TMD，项目经理居然还没有起床！！！
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-sm-1 date">
-                                    <i class="fa fa-user-md"></i> 02-019
-                                    <br>
-                                    <small>21小时前</small>
-                                </div>
-                                <div class="col-sm-11 content">
-                                    <p class="m-b-xs"><strong>开会</strong>
-                                    </p>
-                                    <p>
-                                        开你妹的会，老子还有897894个bug没有修复
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-sm-1 date">
-                                    <i class="fa fa-comments"></i> 02-020
-                                    <br>
-                                    <small class="text-navy">讨论</small>
-                                </div>
-                                <div class="col-sm-11 content">
-                                    <p class="m-b-xs"><strong>…………</strong>
-                                    </p>
-                                    <p>
-                                        又是操蛋的一天
-                                    </p>
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="customer" placeholder = '客户姓名'>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
+                        <a href = 'javascript:void(0);' class = 'btn btn-primary' id = 'searchBtn'>查找</a>
+
+                        <div class="col-sm-2 pull-right">
+                            <input type="text" placeholder="结果内搜索" class="form-control" data-path=".search" data-control-type="textbox" data-control-name="title-filter" data-control-action="filter">
+                        </div>
+                        <ul 
+                                class="pagination jplist-pagination pagination pull-right pagination-lg"
+                                data-control-type="boot-pagination" 
+                                data-control-name="paging" 
+                                data-control-action="paging"
+                                data-range="5"
+                                data-mode="">
+                        </ul>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div 
+                            class="dropdown jplist-items-per-page pull-right"
+                            data-control-type="boot-items-per-page-dropdown" 
+                            data-control-name="paging" 
+                            data-control-action="paging">
+                            <button 
+                                class="btn btn-primary dropdown-toggle" 
+                                type="button" 
+                                data-toggle="dropdown" 
+                                id="dropdown-menu-1"
+                                aria-expanded="true">               
+                                <span data-type="selected-text">每页显示</span>
+                                <span class="caret"></span>                     
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu-1">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" data-number="5">每页显示5订单</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" data-number="10" data-default="true">每页显示10订单</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" data-number="20">每页显示20订单</a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" data-number="all">全部订单</a>
+                                </li>
+                            </ul>                         
+                        </div>
+                        <select 
+                           class="jplist-select" 
+                           data-control-type="sort-select" 
+                           data-control-name="sort" 
+                           data-control-action="sort">
+                                <option data-path=".orderId" data-order="asc" data-type="text">正序</option>
+                                <option data-path=".orderId" data-order="desc" data-type="text">倒序</option>
+                        </select>
                     </div>
-                </div>
-            </div>
+                    <div class="ibox-content timeline timeLineContent scroll">
+                        {{{orderData}}}
+                    </div><!-- end of timeLineContent -->
+                </div><!-- end of id = timeLine -->
+            </div><!-- end of col-sm-12 -->
         </div>
     </div>
 
     <!-- 全局js -->
     <script src="H/js/jquery.min.js?v=2.1.4"></script>
     <script src="H/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="javascripts/bootstrap-suggest.min.js"></script>
 
     <!-- 自定义js -->
     <script src="H/js/content.js?v=1.0.0"></script>
+    <script src="javascripts/jPList/jplist.core.min.js"></script>
+    <script src="javascripts/jPList/jplist.textbox-filter.min.js"></script>
+    <script src="javascripts/jPList/jplist.padination-bundle.min.js"></script>
+    <script src="javascripts/jPList/jplist.sort-bundle.min.js"></script>
+    <script src="H/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="javascripts/orderManage.js"></script>
 
 
 </body>

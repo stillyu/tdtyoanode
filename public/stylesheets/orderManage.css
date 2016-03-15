@@ -2,3 +2,20 @@
 	float: left;
 	text-align: center;
 }
+#panel{
+	position: relative;
+}
+
+.jplist-select{
+	display: none;
+}
+.jplist-pagination{
+	margin: 0;
+	padding: 0;
+}
+.jplist-items-per-page{
+	margin: 0 15px;
+}
+.img-thumbnail{
+	margin: 0 4px;
+}

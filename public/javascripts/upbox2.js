@@ -36,10 +36,52 @@ $.fn.upBox = function(options) {
 
           var img = new Image();
           //获取图片文件的路径
-          uploadFile($(this),file);
+          var fileName = (new Date()).valueOf();
+          fileHandler($(this),file, img,fileName);
+          uploadFile($(this),file,fileName);
         }
       }
     });
+    function fileHandler(dom, file, img,fileName) {
+            //读取文件
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            //创建xmlHttpRequest对象
+            var xmlHttpRequest = new XMLHttpRequest();
+            //xmlHttpRequest open操作
+            xmlHttpRequest.open("POST", options.uploadUrl+"?fileName="+fileName, true);
+            //针对Firefox
+            if (file.getAsBinary) {
+
+            //     var data = dashes + boundary + crlf +
+            //         "Content-Disposition: form-data;" +
+            //         "name=\"" + "test" + "\";" +
+            //         "filename=\"" + unescape(encodeURIComponent(file.name)) + "\"" + crlf +
+            //         "Content-Type: application/octet-stream" + crlf + crlf +
+            //         file.getAsBinary() + crlf +
+            //         dashes + boundary + dashes 
+
+            //     xmlHttpRequest.setRequestHeader("Content-Type", "multipart/form-data;boundary=" + boundary);
+         
+                // xmlHttpRequest.sendAsBinary(data);
+            //针对Chrome
+            } else if (window.FormData) { // Chrome
+                //获取数据
+                var formData = new FormData();
+                //将文件加入数据
+                formData.append("file", file);
+                //发送
+                xmlHttpRequest.send(formData);
+                //监听发送状态
+                xmlHttpRequest.onreadystatechange = function(){
+　　　　　　      //发送成功
+                  if ( xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200 ) {
+                    //获取文件在服务器的保存地址
+                    src = xmlHttpRequest.responseText;
+                  }
+　　　　       };
+            }
+    };
 });
 
  //XmlHttpRequest对象  
@@ -89,11 +131,11 @@ function uploadFailed(evt) {
 function uploadCanceled(evt) {
   alert("链接断开,上传失败");
 }
-function uploadFile(dom,file) {
+function uploadFile(dom,file,fileName) {
   var fd = new FormData();
   var d = new Date;
   var m = d.getMonth() + 1;
-  var key = "order/" + d.getFullYear() + "/" + m + "/" + d.getDate() + "/" + d.getTime() + ".jpg";
+  var key = "order/" + d.getFullYear() + "/" + m + "/" + d.getDate() + "/" + fileName + ".jpg";
   fd.append('key', key);
   fd.append('Content-Type', file.type);      
   fd.append('OSSAccessKeyId', 'N5fWJnQFrtKFQdhn');
